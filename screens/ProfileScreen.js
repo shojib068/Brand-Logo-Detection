@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { FontAwesome } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const ProfileScreen = ({ navigation }) => {
     return (
