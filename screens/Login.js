@@ -143,7 +143,8 @@ export default function LoginScreen({navigation}) {
                         <TouchableOpacity style={styles.cancelButton}
                             onPress={() => {
                                 setLoggedInStatus(false);
-                                navigation.replace('Profile');
+                                navigation.popToTop();
+                                navigation.replace('UserProfile');
                             }}
                         >
                             <Text style={styles.cancelButtonText}>Enter the Area 51</Text>

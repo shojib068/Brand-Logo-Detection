@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable } from 'react-native'
 import {createUserWithEmailAndPassword, sendEmailVerification  } from 'firebase/auth';
 import { auth, db } from '../Firebase/firebaseConfig';
 import { Timestamp, addDoc, collection, doc, updateDoc,query, where,getDocs } from 'firebase/firestore';
@@ -19,9 +19,12 @@ export default function SignUp({navigation}) {
     const [confirmPassword, setconfirmPassword] = useState('')
     const [errorMessage, seterrorMessage] = useState('')
     const [userNameErrorMessage, setuserNameErrorMessage] = useState(['',''])
+    const [emailErrorMessage, setemailErrorMessage] = useState(['',''])
     const [birthDate, setbirthDate] = useState(moment(new Date()).format('DD/MM/YYYY'))
     const [birthDateModalStatus, setbirthDateModalStatus] = useState(false)
     const [loading, setloading] = useState(false)
+    const [showMultipleTextBox, setshowMultipleTextBox] = useState(false)
+
 
     const viewRef = useRef(null);
 
@@ -29,6 +32,13 @@ export default function SignUp({navigation}) {
     const userNameMessages = [
         ["This is a unique Username",'green'],
         ["The Username has already been taken.",'red'],
+        ['','']
+    ]
+
+    const uniqueAndValidEmailMessage = [
+        ["This is a valid Email",'green'],
+        ["Please enter a valid and unique email",'red'],
+        ['Email already has been taken.','red'],
         ['','']
     ]
 
@@ -41,6 +51,41 @@ export default function SignUp({navigation}) {
         setbirthDate('')
         setuserNameErrorMessage(['',''])
     }
+
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
+
+    useEffect(() => {
+        const checkUniqueEmail = async ()=>{
+            if(email!=''){
+                if(isValidEmail(email)==false){
+                    setemailErrorMessage(uniqueAndValidEmailMessage[1])
+                    return;
+                }    
+                try{
+                    const userRef = collection(db, "users")
+                    const q = query(userRef,where('email', '==', email))
+                    const querySnapshot = await getDocs(q);
+                    if(querySnapshot.size==0) {setshowMultipleTextBox(true); 
+                        setemailErrorMessage(uniqueAndValidEmailMessage[0])}
+                    else {setshowMultipleTextBox(false); setemailErrorMessage(uniqueAndValidEmailMessage[2]);}
+                }
+                catch(e){
+                    console.log(e)
+                    setemailErrorMessage(uniqueAndValidEmailMessage[1])
+                }
+            }
+            else{ 
+                setshowMultipleTextBox(false);
+                setemailErrorMessage(uniqueAndValidEmailMessage[1])
+            }
+        }
+        checkUniqueEmail()
+        
+    }, [email])
+    
 
     useEffect(() => {
         const checkUniqueUserName = async ()=>{
@@ -59,7 +104,6 @@ export default function SignUp({navigation}) {
             else setuserNameErrorMessage(userNameMessages[2])
         }
         checkUniqueUserName()
-        
     }, [userName])
     
 
@@ -83,7 +127,6 @@ export default function SignUp({navigation}) {
         }
     }
     
-
     const registerWithEmail = async () => {
         try {
             setloading(true)
@@ -142,7 +185,7 @@ export default function SignUp({navigation}) {
                         placeholderTextColor="#aaaaaa"
                         placeholder='User Name'
                         onChangeText={(text) => {
-                            setUserName(text); 
+                            setUserName(text.trim()); 
                         }}
                         value={userName}
                         underlineColorAndroid="transparent"
@@ -158,7 +201,9 @@ export default function SignUp({navigation}) {
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
-                    <TextInput
+                    {emailErrorMessage[0].length>0 && email.length>0 && <Text style={{color:emailErrorMessage[1],paddingLeft:20,fontSize:13}}>*{emailErrorMessage[0]}*</Text>}
+                    {
+                    showMultipleTextBox && <TextInput 
                         style={styles.input}
                         placeholderTextColor="#aaaaaa"
                         secureTextEntry
@@ -167,8 +212,8 @@ export default function SignUp({navigation}) {
                         value={password}
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
-                    />
-                    <TextInput
+                    />}
+                    {showMultipleTextBox && <TextInput
                         style={styles.input}
                         placeholderTextColor="#aaaaaa"
                         secureTextEntry
@@ -177,7 +222,8 @@ export default function SignUp({navigation}) {
                         value={confirmPassword}
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
-                    />
+                    />}
+                    {showMultipleTextBox &&
                     <TouchableOpacity
                         style={styles.birthdayPicker}
                         onPress={() => setbirthDateModalStatus(true)}>
@@ -185,18 +231,21 @@ export default function SignUp({navigation}) {
                             <FontAwesome name="birthday-cake" size={22} color="#e80505" /> &nbsp; &nbsp;
                             {birthDate}
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                     {birthDateModalStatus && <DateTimePicker
                         testID="dateTimePicker"
                         value={moment(birthDate,'DD/MM/YYYY').toDate()}
                         mode="date"
+                        
                         onChange={(e,date)=>{
-                            const inputMoment = moment.utc(date).isValid() ?
-                            moment.utc(date) : moment.utc();
-                            const formattedDate = inputMoment.format('DD/MM/YYYY');
+                            const day = date.getDate();
+                            const month = date.getMonth(); 
+                            const year = date.getFullYear();
+                            
+                            const formattedDate = `${day.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/${year.toString()}`;
+
                             setbirthDate(formattedDate)
-                            // console.log(formattedDate)
-                            setbirthDateModalStatus(false)
+                            setbirthDateModalStatus(false);
                         }}
                     />}
                     {errorMessage.length>0 && <Text style={{color:'red',textAlign:'center'}}>*{errorMessage}*</Text>}
@@ -232,9 +281,9 @@ const styles = StyleSheet.create({
     },
     logo: {
         alignSelf:'center',
-        color:"#0274ed",
+        // color:"#0274ed",
         height:150,
-        width:150,
+        width:200,
         marginBottom:20,
         marginTop:30
     },

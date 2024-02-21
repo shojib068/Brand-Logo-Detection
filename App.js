@@ -9,6 +9,7 @@ import HomeScreen from './screens/HomeScreen';
 import LogosScreen from './screens/LogosScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ImageDetailScreen from './screens/ImageDetailScreen';
+import UserProfile from './screens/Profile';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
         <Stack.Screen name="SignUp" component={SignupScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Logos" component={LogosScreen} />
         <Stack.Screen name="ImageDetail" component={ImageDetailScreen} />
+        <Stack.Screen name="UserProfile"component={UserProfile} options={{headerShown:false}}/>
       </Stack.Navigator>
 
     </NavigationContainer>
