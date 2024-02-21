@@ -56,11 +56,15 @@ const HomeScreen = ({ navigation }) => {
          
         
         >
+
           <Text style={styles.buttonText}>Detect Logo</Text>
         </TouchableOpacity>
           <FontAwesome name="camera" size={24} color="black" onPress={() => navigation.navigate('Logos')} />
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <FontAwesome name="user" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('AboutUs')}>
+            <FontAwesome name="info" size={24} color="black" />
           </TouchableOpacity>
         </View>
     );

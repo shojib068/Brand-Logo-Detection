@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../Firebase/firebaseConfig';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { View, Text, StyleSheet, TouchableOpacity, navigation } from 'react-native';
+import { doc, getDoc, collection, getDocs,query, where,uid } from 'firebase/firestore';
 
-const UserProfile = () => {
+const UserProfile = ({navigation}) => {
   const [userInfo, setUserInfo] = useState(null);
 
-  const handleLogout = async () => {
-    await auth.signOut();
+  const handleLogout = () => {
+    auth.signOut();
     navigation.replace('LogIn');
   };
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-         const docRef = query(collection(db, 'users'), where('user_id', '==', auth.currentUser.uid));
-         console.log(uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          console.log('Document data:', docSnap.data());
-          setUserInfo(docSnap.data());
-        } else {
-          console.log('No such document!');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
+      try{
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, where("email", "==", auth.currentUser.email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            const userData = doc.data();
+            const {userName,user_id,email,dp_url,birthday}=userData
+            const loggedUserInfo = {
+                userRef:user_id,
+                email:email,
+                userName:userName,
+                userProfilePic:dp_url,
+                birthday:birthday
+            }
+            setUserInfo(loggedUserInfo)
+          })
       }
-    };
-
-    fetchUserData();
+      catch(e){
+        console.log(e)
+      }
+      
+    }
+    fetchUserData()
   }, []);
 
   return (

@@ -143,7 +143,7 @@ export default function LoginScreen({navigation}) {
                         <TouchableOpacity style={styles.cancelButton}
                             onPress={() => {
                                 setLoggedInStatus(false);
-                                navigation.popToTop();
+                                // navigation.popToTop();
                                 navigation.replace('UserProfile');
                             }}
                         >

@@ -10,12 +10,16 @@ import LogosScreen from './screens/LogosScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ImageDetailScreen from './screens/ImageDetailScreen';
 import UserProfile from './screens/Profile';
+import AboutUs from './screens/AboutUs';
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      
+      
+      
         <Stack.Screen
           name="Home"
           component={HomeScreen}
@@ -39,6 +43,7 @@ const App = () => {
         <Stack.Screen name="Logos" component={LogosScreen} />
         <Stack.Screen name="ImageDetail" component={ImageDetailScreen} />
         <Stack.Screen name="UserProfile"component={UserProfile} options={{headerShown:false}}/>
+        <Stack.Screen name="AboutUs" component={AboutUs} options={{headerShown:false}}/>
       </Stack.Navigator>
 
     </NavigationContainer>
