@@ -1,14 +1,23 @@
-
-import React, { useState } from "react";
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import {gsap, Back} from 'gsap-rn';
 
 const ImageDetailScreen = ({ route }) => {
   const { selectedImage } = route.params;
+  const viewRef = useRef(null);
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const imageRef = useRef(null);
 
   const handleLike = () => {
     setLikes(likes + 1);
@@ -25,12 +34,20 @@ const ImageDetailScreen = ({ route }) => {
     }
   };
 
+  useEffect(() => {
+    const view = viewRef.current;
+    gsap.to(view, {duration:1, transform:{rotate:360, scale:1}, 	ease:Back.easeInOut});
+}, [])
+
   return (
     <View style={styles.container}>
-    {/* {selectedImage} */}
-      <Image source={{ uri: selectedImage }} style={styles.imagePreview} />
+      <Image
+        ref={viewRef}
+        source={{ uri: selectedImage }}
+        style={styles.imagePreview}
+      />
       <View>
-        <Text style={styles.logoName}> Logo Identified</Text>
+        <Text style={styles.animalName}>Logo Name</Text>
       </View>
       <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.actionButton} onPress={handleLike}>
@@ -79,10 +96,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     resizeMode: "cover",
   },
-  logoName:{
-    color: 'white',
+  animalName: {
+    color: "white",
     fontSize: 25,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 10,
     marginTop: 10,
   },

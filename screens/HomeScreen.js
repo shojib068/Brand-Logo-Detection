@@ -2,6 +2,7 @@ import React, {useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
+import { auth} from '../Firebase/firebaseConfig';
 const HomeScreen = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -20,7 +21,9 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('ImageDetail', { selectedImage });
     console.log('pressed');
   };
-
+const handleViewPosts = () =>{
+  navigation.navigate('Posts');
+}
   const handleImagePicker = async () => {
     console.log('image');
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -30,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       console.log(result.assets[0].uri)
     }
@@ -59,6 +62,12 @@ const HomeScreen = ({ navigation }) => {
 
           <Text style={styles.buttonText}>Detect Logo</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+        style={styles.viewPostsButton}
+        onPress={handleViewPosts}
+      >
+        <Text style={styles.buttonText}>View Posts</Text>
+      </TouchableOpacity>
           <FontAwesome name="camera" size={24} color="black" onPress={() => navigation.navigate('Logos')} />
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <FontAwesome name="user" size={24} color="black" />
@@ -95,6 +104,14 @@ const HomeScreen = ({ navigation }) => {
         height: 250,
         borderRadius: 4,
         marginBottom: 16,
+      },
+      viewPostsButton: {
+        backgroundColor: '#FF5733',
+        padding: 16,
+        borderRadius: 8,
+        width: '80%',
+        alignItems: 'center',
+        marginTop: 12,
       },
       detectButton: {
         backgroundColor: '#33CC66',

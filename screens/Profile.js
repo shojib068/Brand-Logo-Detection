@@ -1,16 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, {useId, useState, useEffect } from 'react';
 import { auth, db } from '../Firebase/firebaseConfig';
 import { View, Text, StyleSheet, TouchableOpacity, navigation } from 'react-native';
-import { doc, getDoc, collection, getDocs,query, where,uid } from 'firebase/firestore';
-
+import { Timestamp,doc, getDoc, collection, getDocs,query, where,uid, serverTimestamp, setDoc, addDoc} from 'firebase/firestore';
+import { FontAwesome } from '@expo/vector-icons'; 
 const UserProfile = ({navigation}) => {
   const [userInfo, setUserInfo] = useState(null);
-
+  const [rating, setRating] = useState(0);
+  const randomId = useId();
+  const [latestRating, setLatestRating] = useState('');
   const handleLogout = () => {
     auth.signOut();
     navigation.replace('LogIn');
   };
+  const handleWriteBlog =() => {
+    navigation.replace('WriteBlog');
+  };
+  const submitRating = async() => {
+  
+    const usersRef = collection(db, "appRatings")
+    try{
+      if(rating > 0){
+      const docRef = await addDoc(usersRef,{
+        "email":auth.currentUser.email,
+            "ratings": rating,
+            "created_at": Timestamp.fromDate(new Date()),
+            
+      });
+      
+      updateDoc(doc(db,"appRatings",docRef.id),{"rating_id":docRef.id})
+      .then(()=>{
+        alert(`You have rated ${rating} starr`);
+      })
+    }
+    }catch(e){
+alert("Please Rate");
+    }
+  };
 
+
+  
   useEffect(() => {
     const fetchUserData = async () => {
       try{
@@ -47,12 +75,39 @@ const UserProfile = ({navigation}) => {
           <Text style={styles.text}>{userInfo.userName}</Text>
           <Text style={styles.label}>Email:</Text>
           <Text style={styles.text}>{userInfo.email}</Text>
-          {/* Add more user data fields here */}
+          <Text style={styles.label}>BirthDay:</Text>
+          <Text style={styles.text}>{userInfo.birthday}</Text>
         </View>
       )}
+      <TouchableOpacity style={styles.button} onPress={handleWriteBlog}>
+        <Text style={styles.buttonText}>Write a Blog</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
+
+      <View style={styles.ratingContainer}>
+        <Text style={styles.subHeading}>Rate Our App</Text>
+        <View style={styles.starsContainer}>
+          {[1, 2, 3, 4, 5].map((star, index) => (
+            <TouchableOpacity 
+              key={index} 
+              onPress={() => setRating(star)}
+            >
+              <FontAwesome
+                name={star <= rating ? "star" : "star-o"}
+                size={30}
+                color={star <= rating ? "#FFD700" : "#ccc"}
+                style={styles.starIcon}
+              />
+            </TouchableOpacity>
+          ))}
+        </View>
+        <TouchableOpacity onPress={submitRating}>
+          <Text style={styles.submitButton}>Submit Rating</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -93,11 +148,35 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '100%',
     alignItems: 'center',
+    marginBottom: 10,
   },
   buttonText: {
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  ratingContainer: {
+    marginTop: 20,
+  },
+  subHeading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  starsContainer: {
+    flexDirection: 'row',
+  },
+  starIcon: {
+    marginRight: 5,
+  },
+  submitButton: {
+    backgroundColor: '#007bff',
+    color: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    width: 150,
+    textAlign: 'center',
+    marginTop: 10,
   },
 });
 
