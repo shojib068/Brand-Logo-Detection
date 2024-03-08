@@ -14,6 +14,8 @@ import AboutUs from './screens/AboutUs';
 import WriteBlogScreen from './screens/Writeblog';
 import AppNavigator from './screens/BottomTab';
 import Table from './component/table';
+import BlogList from './screens/AllBlogLists';
+import BlogListItem from './component/BlogsListItem';
 // import PostsScreen from './screens/PostsScreen';
 // import AddPostScreen from './screens/AddPostScreen';
 // import PostDetailScreen from './screens/PostDetailScreen';
@@ -53,7 +55,8 @@ const App = () => {
         <Stack.Screen name="UserProfile"component={UserProfile} options={{headerShown:false}}/>
         <Stack.Screen name="AboutUs" component={AboutUs} options={{headerShown:false}}/>
         <Stack.Screen name="Table" component={Table} options={{headerShown:false}}/>
-        
+        <Stack.Screen name="BlogList" component={BlogList} options={{headerShown:false}}/>
+        <Stack.Screen name="BlogListItem" component={BlogListItem} options={{headerShown:false}}/>
         
                
      {/* <Stack.Screen name='Posts' component={PostsScreen}/>

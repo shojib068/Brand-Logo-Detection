@@ -49,7 +49,7 @@ const Writeblog = ({navigation}) => {
             alert("Your Blog has been published!")
             setTitle('')
             setContent('')
-            // navigation.navigate('AllBlogLists')
+             navigation.navigate('BlogList')
           } 
           catch (error) {
             alert("Something Went Wrong! :(")
@@ -91,7 +91,7 @@ const Writeblog = ({navigation}) => {
     fetchUserData()
   }, []);
 
-  
+
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
