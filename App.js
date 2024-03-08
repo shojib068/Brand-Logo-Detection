@@ -12,6 +12,8 @@ import ImageDetailScreen from './screens/ImageDetailScreen';
 import UserProfile from './screens/Profile';
 import AboutUs from './screens/AboutUs';
 import WriteBlogScreen from './screens/Writeblog';
+import AppNavigator from './screens/BottomTab';
+import Table from './component/table';
 // import PostsScreen from './screens/PostsScreen';
 // import AddPostScreen from './screens/AddPostScreen';
 // import PostDetailScreen from './screens/PostDetailScreen';
@@ -43,12 +45,16 @@ const App = () => {
         />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown:false}}/>
         <Stack.Screen name="LogIn" component={LoginScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="WriteBlog" component={WriteBlogScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="AppNav" component={AppNavigator} options={{headerShown:false}}/>
         <Stack.Screen name="SignUp" component={SignupScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Logos" component={LogosScreen} />
         <Stack.Screen name="ImageDetail" component={ImageDetailScreen} />
         <Stack.Screen name="UserProfile"component={UserProfile} options={{headerShown:false}}/>
         <Stack.Screen name="AboutUs" component={AboutUs} options={{headerShown:false}}/>
-        <Stack.Screen name="WriteBlog" component={WriteBlogScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="Table" component={Table} options={{headerShown:false}}/>
+        
+        
                
      {/* <Stack.Screen name='Posts' component={PostsScreen}/>
         <Stack.Screen name='AddPost' component={AddPostScreen}/>

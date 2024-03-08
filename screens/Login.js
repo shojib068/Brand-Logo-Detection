@@ -144,7 +144,7 @@ export default function LoginScreen({navigation}) {
                             onPress={() => {
                                 setLoggedInStatus(false);
                                 // navigation.popToTop();
-                                navigation.replace('UserProfile');
+                                navigation.replace('AppNav');
                             }}
                         >
                             <Text style={styles.cancelButtonText}>Enter the Area 51</Text>

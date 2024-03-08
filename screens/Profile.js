@@ -1,7 +1,7 @@
 import React, {useId, useState, useEffect } from 'react';
 import { auth, db } from '../Firebase/firebaseConfig';
 import { View, Text, StyleSheet, TouchableOpacity, navigation } from 'react-native';
-import { Timestamp,doc, getDoc, collection, getDocs,query, where,uid, serverTimestamp, setDoc, addDoc} from 'firebase/firestore';
+import { Timestamp,doc, getDoc, collection, getDocs,query, where,uid, serverTimestamp, setDoc, addDoc, updateDoc} from 'firebase/firestore';
 import { FontAwesome } from '@expo/vector-icons'; 
 const UserProfile = ({navigation}) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -15,27 +15,37 @@ const UserProfile = ({navigation}) => {
   const handleWriteBlog =() => {
     navigation.replace('WriteBlog');
   };
-  const submitRating = async() => {
+  const submitRating = async () => {
+    try {
+      const ratingsRef = collection(db, "appRatings");
+      const userRatingsQuery = query(ratingsRef, where("email", "==", auth.currentUser.email));
+      const userRatingsSnapshot = await getDocs(userRatingsQuery);
+      const userRatings = userRatingsSnapshot.docs.map(doc => doc.data());
   
-    const usersRef = collection(db, "appRatings")
-    try{
-      if(rating > 0){
-      const docRef = await addDoc(usersRef,{
-        "email":auth.currentUser.email,
-            "ratings": rating,
-            "created_at": Timestamp.fromDate(new Date()),
-            
-      });
-      
-      updateDoc(doc(db,"appRatings",docRef.id),{"rating_id":docRef.id})
-      .then(()=>{
-        alert(`You have rated ${rating} starr`);
-      })
-    }
-    }catch(e){
-alert("Please Rate");
+      if (userRatings.length > 0) {
+        // User has already given ratings, update the existing rating record
+        const userRatingDoc = userRatingsSnapshot.docs[0]; // Assuming there's only one rating per user
+        const userRatingId = userRatingDoc.id;
+        await updateDoc(doc(db, "appRatings", userRatingId), {
+          ratings: rating,
+          created_at: Timestamp.fromDate(new Date())
+        });
+        alert(`Your rating has been updated to ${rating} stars`);
+      } else {
+        // User has not given ratings before, add a new rating record
+        const docRef = await addDoc(ratingsRef, {
+          email: auth.currentUser.email,
+          ratings: rating,
+          created_at: Timestamp.fromDate(new Date())
+        });
+        alert(`You have rated ${rating} stars`);
+      }
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+      alert("Failed to submit rating. Please try again later.");
     }
   };
+  
 
 
   

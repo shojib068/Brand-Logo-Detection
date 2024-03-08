@@ -72,7 +72,7 @@ const handleViewPosts = () =>{
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <FontAwesome name="user" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('AboutUs')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Table')}>
             <FontAwesome name="info" size={24} color="black" />
           </TouchableOpacity>
         </View>

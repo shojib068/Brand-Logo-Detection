@@ -1,52 +1,68 @@
-import React, { useId, useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Dimensions, Linking, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { WebView } from 'react-native-webview';
 import MapView, { Marker } from 'react-native-maps';
-import { FontAwesome } from '@expo/vector-icons'; 
-import firebase from 'firebase/app';
-import { db, firestore } from '../Firebase/firebaseConfig';
-import { collection, map,doc, serverTimestamp, setDoc,query,getDocs,where, onSnapshot } from 'firebase/firestore';
+import { FontAwesome } from '@expo/vector-icons';
+import { collection, getDocs, onSnapshot, getFirestore } from 'firebase/firestore';
 
 const AboutUs = () => {
-  const [rating, setRating] = useState(0);
-  const randomId = useId();
+  const [overallRating, setOverallRating] = useState(0);
   const [ratings, setRatings] = useState([]);
-  const [ratingList, setRatingList] = useState([]);
+
   const openLink = (url) => {
     Linking.openURL(url);
   };
+
   useEffect(() => {
-    const fetchRatings = async () => {
-      try {
-        const ratingsRef = collection(db, 'appRatings'); 
-        const q = query(ratingsRef); 
-        const querySnapshot = await getDocs(q);
-        const ratingList = [];
-        querySnapshot.forEach((doc) => {
-          const ratingData = doc.data();
-         
-          const {email,rating,created_at} = ratingData
-          const ratingUserInfo = {
-            "email": email, 
-           " rating": ratings, 
-            "created_at": created_at 
-          };
-          ratingList.push(ratingData);
-        });
-        setRatings(ratingList);
-      } catch (error) {
-        console.error('Error fetching ratings:', error);
-      }
-    };
-    fetchRatings();
+    const db = getFirestore();
+    const ratingsRef = collection(db, 'appRatings');
+
+    // Subscribe to changes in the ratings collection
+    const unsubscribe = onSnapshot(ratingsRef, (snapshot) => {
+      const ratingList = [];
+      let totalRating = 0;
+      let numRatings = 0;
+
+      snapshot.forEach((doc) => {
+        const ratingData = doc.data();
+        totalRating += ratingData.ratings;
+        numRatings++;
+        ratingList.push(ratingData);
+      });
+
+      setRatings(ratingList);
+
+      // Calculate overall rating
+      const averageRating = numRatings > 0 ? totalRating / numRatings : 0;
+      setOverallRating(averageRating);
+    });
+
+    return () => unsubscribe();
   }, []);
-  
+  const calculateOverallRating = () => {
+    if (ratings.length === 0) return 0;
+    const totalRating = ratings.reduce((acc, rating) => acc + rating.ratings, 0);
+    return totalRating / ratings.length;
+  };
+
+  const renderStars = (rating) => {
+    const filledStars = Math.round(rating);
+    const emptyStars = 5 - filledStars;
+    const starIcons = [];
+    for (let i = 0; i < filledStars; i++) {
+      starIcons.push(<FontAwesome key={i} name="star" size={20} color="gold" />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      starIcons.push(<FontAwesome key={i + filledStars} name="star-o" size={20} color="gold" />);
+    }
+    return starIcons;
+  };
 
 
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.heading}>About Ussssss</Text>
+        <Text style={styles.heading}>About Us</Text>
 
         {/* Display YouTube Video */}
         <View style={styles.videoContainer}>
@@ -81,7 +97,7 @@ const AboutUs = () => {
         {/* Display Introduction */}
         <Text style={styles.subHeading}>Introduction</Text>
         <Text style={styles.paragraph}>
-          Welcome to PetEmote, where we bring the world of emotions closer to your furry companions!
+          Welcome to our app
           {/* Your introduction text goes here */}
         </Text>
 
@@ -121,35 +137,27 @@ const AboutUs = () => {
           </View>
         </View>
 
-       { /* Display FAQs 
-       <View>
-       <Text style={styles.subHeading}>Rated users</Text>
-        <Text style={styles.paragraph}>
-          
-          </Text> 
-          </View>*/} 
-          <View style={styles.container}>
-          <Text style={styles.subHeading}>User Ratings</Text>
-          {ratings &&
-            Object.values(
-              ratings.reduce((acc, rating) => {
-                if (!acc[rating.email] || acc[rating.email].created_at < rating.created_at) {
-                  acc[rating.email] = rating;
-                }
-                return acc;
-              }, {})
-            ).map((rating, index) => (
-              <View key={index} style={styles.ratingRow}>
-                <Text style={styles.ratingText}>{`${rating.email.split('@')[0]}: `}</Text>
-                {[...Array(rating.ratings)].map((_, i) => (
-                  <FontAwesome key={i} name="star" size={20} color="gold" />
-                ))}
-              </View>
-            ))}
+        {/* Display Overall Rating */}
+        <View style={styles.ratingContainer}>
+          <Text style={styles.subHeading}>Overall App Rating</Text>
+          <Text style={styles.ratingText}>{overallRating.toFixed(1)} stars</Text>
+          <View style={styles.starsContainer}>
+        {renderStars(calculateOverallRating())}
+      </View>
         </View>
-        
 
-        
+        {/* Display User Ratings */}
+        <View style={styles.ratingContainer}>
+          <Text style={styles.subHeading}>User Ratings</Text>
+          {ratings.map((rating, index) => (
+            <View key={index} style={styles.ratingRow}>
+              <Text style={styles.ratingText}>{`${rating.email.split('@')[0]}: `}</Text>
+              {[...Array(rating.ratings)].map((_, i) => (
+                <FontAwesome key={i} name="star" size={20} color="gold" />
+              ))}
+            </View>
+          ))}
+        </View>
       </ScrollView>
     </View>
   );
@@ -158,75 +166,50 @@ const AboutUs = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
+    padding: 20,
   },
   heading: {
-    fontSize: 26,
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  subHeading: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#e80505', // Changed color to a different color
-    paddingTop: 30,
+  },
+  paragraph: {
+    fontSize: 16,
+    marginBottom: 20,
   },
   videoContainer: {
     marginBottom: 20,
   },
-  subHeading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 12,
-    color: '#28a745'
-  },
   video: {
-    height: 200,
-    width: Dimensions.get('window').width - 40,
+    width: '100%',
+    aspectRatio: 16 / 9,
   },
   mapContainer: {
-    backgroundColor: 'white',
-    marginVertical: 10,
-    padding: 10,
-    
-    borderColor: '#e80505',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
+    marginBottom: 20,
   },
   map: {
-    height: 200,
-    borderRadius: 10,
-  },
-  paragraph: {
-    fontSize: 16,
-    marginBottom: 12,
+    width: '100%',
+    aspectRatio: 16 / 9,
   },
   socialMediaContainer: {
-    marginTop: 20,
+    marginBottom: 20,
   },
   socialMediaLinks: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    width: '50%',
   },
   icon: {
-    marginHorizontal: 10,
+    marginRight: 10,
   },
   ratingContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  starsContainer: {
-    flexDirection: 'row',
-  },
-  starIcon: {
-    marginHorizontal: 2,
-  },
-  submitButton: {
-    marginTop: 10,
-    fontSize: 18,
-    color: '#007bff', // You can change the color to match your design
-    textDecorationLine: 'underline',
+    marginBottom: 20,
   },
   ratingRow: {
     flexDirection: 'row',
@@ -234,8 +217,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   ratingText: {
-    fontSize: 18,
-    marginLeft: 5,
+    fontSize: 16,
+    marginRight: 5,
+  },
+  starsContainer: {
+    flexDirection: 'row',
   },
 });
 
