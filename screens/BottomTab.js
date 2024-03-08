@@ -6,6 +6,7 @@ import HomeScreen from './HomeScreen';
 import UserProfile from './Profile';
 import AboutUs from './AboutUs';
 import table from '../component/table';
+import BlogList from './AllBlogLists';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ const AppNavigator = () => {
       <Tab.Screen name="UserProfile" component={UserProfile} initialParams={{ darkModeEnabled }} />
       <Tab.Screen name="Settings" component={SettingsScreen} initialParams={{ darkModeEnabled }} />
       <Tab.Screen name="AboutUs" component={AboutUs} initialParams={{ darkModeEnabled }} />
-      <Tab.Screen name="Table" component={table} initialParams={{ darkModeEnabled }}/>
+      <Tab.Screen name="BlogList" component={BlogList} initialParams={{ darkModeEnabled }}/>
     </Tab.Navigator>
   );
 };

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Provider } from 'react-redux';
+// import store from '.redux/store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
@@ -16,6 +18,7 @@ import AppNavigator from './screens/BottomTab';
 import Table from './component/table';
 import BlogList from './screens/AllBlogLists';
 import BlogListItem from './component/BlogsListItem';
+import BlogUI from './screens/ABlog';
 // import PostsScreen from './screens/PostsScreen';
 // import AddPostScreen from './screens/AddPostScreen';
 // import PostDetailScreen from './screens/PostDetailScreen';
@@ -57,7 +60,7 @@ const App = () => {
         <Stack.Screen name="Table" component={Table} options={{headerShown:false}}/>
         <Stack.Screen name="BlogList" component={BlogList} options={{headerShown:false}}/>
         <Stack.Screen name="BlogListItem" component={BlogListItem} options={{headerShown:false}}/>
-        
+        <Stack.Screen name="ABlog" component={BlogUI} options={{headerShown:false}}/>
                
      {/* <Stack.Screen name='Posts' component={PostsScreen}/>
         <Stack.Screen name='AddPost' component={AddPostScreen}/>
