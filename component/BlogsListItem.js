@@ -19,7 +19,7 @@ const BlogListItem = ({navigation, date, blogRef, profilePic, userName, title, l
     <Pressable style={styles.blogContainer} onPress={()=>{navigateToABlog()}}>
       <Image source={{uri:imageUrl}} style={styles.profilePic} />
       <View style={styles.blogContent}>
-        <Text style={styles.userName}>{userName}</Text>
+        <Text style={styles.userName}>{userName}</Text> 
         <Text style={{fontSize:10}}>{date.slice(9)}</Text>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.infoContainer}>

@@ -8,6 +8,7 @@ import { collection, getDocs, onSnapshot, getFirestore } from 'firebase/firestor
 const AboutUs = () => {
   const [overallRating, setOverallRating] = useState(0);
   const [ratings, setRatings] = useState([]);
+  const API = 'a8e5ff2d1e5ba7337eaf1bb8a0e3e035';
 
   const openLink = (url) => {
     Linking.openURL(url);

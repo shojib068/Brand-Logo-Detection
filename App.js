@@ -19,17 +19,14 @@ import Table from './component/table';
 import BlogList from './screens/AllBlogLists';
 import BlogListItem from './component/BlogsListItem';
 import BlogUI from './screens/ABlog';
-// import PostsScreen from './screens/PostsScreen';
-// import AddPostScreen from './screens/AddPostScreen';
-// import PostDetailScreen from './screens/PostDetailScreen';
+import WeatherUpdate from './screens/WeatherUpdate';
+import { ApolloClient, InMemoryCache, AppolloProvider } from '@apollo/client';
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      
-      
       
         <Stack.Screen
           name="Home"
@@ -48,8 +45,8 @@ const App = () => {
             ),
           }}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown:false}}/>
         <Stack.Screen name="LogIn" component={LoginScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown:false}}/>
         <Stack.Screen name="WriteBlog" component={WriteBlogScreen} options={{headerShown:false}}/>
         <Stack.Screen name="AppNav" component={AppNavigator} options={{headerShown:false}}/>
         <Stack.Screen name="SignUp" component={SignupScreen} options={{headerShown:false}}/>
@@ -61,10 +58,11 @@ const App = () => {
         <Stack.Screen name="BlogList" component={BlogList} options={{headerShown:false}}/>
         <Stack.Screen name="BlogListItem" component={BlogListItem} options={{headerShown:false}}/>
         <Stack.Screen name="ABlog" component={BlogUI} options={{headerShown:false}}/>
+        <Stack.Screen name="WeatherUpdate" component={WeatherUpdate} options={{headerShown:false}}/>
+       
+    
                
-     {/* <Stack.Screen name='Posts' component={PostsScreen}/>
-        <Stack.Screen name='AddPost' component={AddPostScreen}/>
-        <Stack.Screen name='PostDetails' component={PostDetailScreen}/>*/}
+   
             
       </Stack.Navigator>
 

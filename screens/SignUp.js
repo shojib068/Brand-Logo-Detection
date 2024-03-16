@@ -213,7 +213,7 @@ export default function SignUp({navigation}) {
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />}
-                    {showMultipleTextBox && <TextInput
+                    { password.length >= 8 && showMultipleTextBox && <TextInput
                         style={styles.input}
                         placeholderTextColor="#aaaaaa"
                         secureTextEntry
@@ -223,7 +223,7 @@ export default function SignUp({navigation}) {
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />}
-                    {showMultipleTextBox &&
+                    { password.length >= 8 && showMultipleTextBox &&
                     <TouchableOpacity
                         style={styles.birthdayPicker}
                         onPress={() => setbirthDateModalStatus(true)}>
@@ -248,7 +248,7 @@ export default function SignUp({navigation}) {
                             setbirthDateModalStatus(false);
                         }}
                     />}
-                    {errorMessage.length>0 && <Text style={{color:'red',textAlign:'center'}}>*{errorMessage}*</Text>}
+                    { errorMessage.length>0 && <Text style={{color:'red',textAlign:'center'}}>*{errorMessage}*</Text>}
                     <TouchableOpacity
                         disabled={password.length==0 || email.length==0}
                         style={styles.button}

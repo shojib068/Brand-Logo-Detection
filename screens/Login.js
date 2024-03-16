@@ -13,6 +13,7 @@ export default function LoginScreen({navigation}) {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);
     const [loggedInStatus, setLoggedInStatus] = useState(false);
     const [welcomeUserName, setWelcomeUserName] = useState('');
@@ -84,6 +85,21 @@ export default function LoginScreen({navigation}) {
         }
     }
 
+    useEffect(() => {
+        const checkLoggedIn = async () => {
+            const userData = await AsyncStorage.getItem('userData');
+            if (userData) {
+              const parsedUserData = JSON.parse(userData);
+              navigation.replace('UserProfile')
+            } else {
+              // User data doesn't exist, show login screen
+              // or redirect to the login page
+            }
+          };
+          checkLoggedIn()
+    }, [])
+
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Image
@@ -96,14 +112,18 @@ export default function LoginScreen({navigation}) {
                 underlineColorAndroid="transparent" autoCapitalize="none"
             />
             <TextInput
-                style={styles.input} placeholderTextColor="#aaaaaa" secureTextEntry placeholder='Password'
+                style={styles.input} placeholderTextColor="#aaaaaa" secureTextEntry={!showPassword} placeholder='Password'
                 onChangeText={(text) => { setPassword(text); setErrorMessage('') }} value={password}
                 underlineColorAndroid="transparent" autoCapitalize="none"
             />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+            <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={24} color="#aaaaaa" />
+                </TouchableOpacity>
 
             <Pressable style={styles.checkboxContainer} onPress={() => setIsRememberMeChecked(!isRememberMeChecked)}>
                 <Checkbox
                     style={styles.checkbox}
+                    status={isRememberMeChecked ? 'checked' : 'unchecked'}
                     value={isRememberMeChecked}
                     onValueChange={() => setIsRememberMeChecked(!isRememberMeChecked)}
                     color={isRememberMeChecked ? '#e80909' : undefined}

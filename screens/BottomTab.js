@@ -7,6 +7,7 @@ import UserProfile from './Profile';
 import AboutUs from './AboutUs';
 import table from '../component/table';
 import BlogList from './AllBlogLists';
+import BlogUI from './ABlog';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,9 +20,7 @@ const AppNavigator = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'UserProfile') {
+          if (route.name === 'UserProfile') {
             iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Settings') {
             iconName = focused ? 'settings' : 'settings-outline';
@@ -37,11 +36,11 @@ const AppNavigator = () => {
         tabBarStyle: { backgroundColor: darkModeEnabled ? '#222' : '#fff', borderTopWidth: 0 },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} initialParams={{ darkModeEnabled }} />
       <Tab.Screen name="UserProfile" component={UserProfile} initialParams={{ darkModeEnabled }} />
       <Tab.Screen name="Settings" component={SettingsScreen} initialParams={{ darkModeEnabled }} />
       <Tab.Screen name="AboutUs" component={AboutUs} initialParams={{ darkModeEnabled }} />
       <Tab.Screen name="BlogList" component={BlogList} initialParams={{ darkModeEnabled }}/>
+      
     </Tab.Navigator>
   );
 };

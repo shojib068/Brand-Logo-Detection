@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Switch, useColorScheme } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { auth } from '../Firebase/firebaseConfig';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SettingsScreen = ({ navigation }) => {
   const colorScheme = useColorScheme();
   const [darkModeEnabled, setDarkModeEnabled] = useState(colorScheme === 'dark');
@@ -14,14 +14,18 @@ const SettingsScreen = ({ navigation }) => {
   const onToggleDarkMode = () => {
     const newMode = !darkModeEnabled;
     setDarkModeEnabled(newMode);
-    // Save the new mode to AsyncStorage or your preferred storage
-    // You can use newMode to adjust your app's appearance
+   
   };
 
-  const onSignOutPress = () => {
-    auth.signOut();
-    navigation.replace('LogIn');
-  };
+  const onSignOutPress = async () => {
+    try {
+        await AsyncStorage.removeItem('userData'); // Clear user data from AsyncStorage
+        await auth.signOut(); // Sign out the user
+        navigation.replace('LogIn'); // Navigate back to the login screen or wherever appropriate
+    } catch (error) {
+        console.log('Error signing out:', error);
+    }
+};
 
   return (
     <View style={[styles.container, { backgroundColor: darkModeEnabled ? '#121212' : '#ffffff' }]}>

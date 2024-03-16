@@ -3,6 +3,7 @@ import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'reac
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
 import { auth} from '../Firebase/firebaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const HomeScreen = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -38,6 +39,20 @@ const handleViewPosts = () =>{
       console.log(result.assets[0].uri)
     }
   };
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          const parsedUserData = JSON.parse(userData);
+          navigation.replace('AppNav')
+        } else {
+          // User data doesn't exist, show login screen
+          // or redirect to the login page
+        }
+      };
+      checkLoggedIn()
+}, [])
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Brand Logo Detection</Text>
@@ -72,7 +87,7 @@ const handleViewPosts = () =>{
           <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <FontAwesome name="user" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Table')}>
+          <TouchableOpacity onPress={() => navigation.navigate('DropdownComponent')}>
             <FontAwesome name="info" size={24} color="black" />
           </TouchableOpacity>
         </View>
