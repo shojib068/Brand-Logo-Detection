@@ -4,6 +4,23 @@ import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
 import { auth} from '../Firebase/firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useQuery, gql } from '@apollo/client';
+import { FlatList } from 'react-native-gesture-handler';
+const COUNTRY_QUERY = gql `
+query CountryQuery{
+  countries{
+    name
+    capital 
+    emoji 
+    code 
+    currency 
+    continent
+    {
+      name
+    }
+  }
+}
+`
 const HomeScreen = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -53,6 +70,11 @@ const handleViewPosts = () =>{
       };
       checkLoggedIn()
 }, [])
+const{data, loading} = useQuery(COUNTRY_QUERY)
+
+// useEffect(()=>{
+//   console.log('GraphQl===', data)
+// })
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Brand Logo Detection</Text>
@@ -90,6 +112,14 @@ const handleViewPosts = () =>{
           <TouchableOpacity onPress={() => navigation.navigate('DropdownComponent')}>
             <FontAwesome name="info" size={24} color="black" />
           </TouchableOpacity>
+          <FlatList
+        data={data?.countries}
+        renderItem={ ({item}) =>
+          <View style={{backgroundColor:'green', marginBottom:10, height:40}}>
+            <Text style={{color:'white'}}>{item.name}</Text>
+          </View>
+        }
+      />
         </View>
     );
   };

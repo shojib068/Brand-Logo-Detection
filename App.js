@@ -20,11 +20,16 @@ import BlogList from './screens/AllBlogLists';
 import BlogListItem from './component/BlogsListItem';
 import BlogUI from './screens/ABlog';
 import WeatherUpdate from './screens/WeatherUpdate';
-import { ApolloClient, InMemoryCache, AppolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 const Stack = createStackNavigator();
-
+// Initialize Apollo Client
+const client = new ApolloClient({
+  uri: 'https://countries.trevorblades.com/graphql',
+  cache: new InMemoryCache()
+});
 const App = () => {
   return (
+    <ApolloProvider client={client}>
     <NavigationContainer>
       <Stack.Navigator>
       
@@ -67,6 +72,7 @@ const App = () => {
       </Stack.Navigator>
 
     </NavigationContainer>
+    </ApolloProvider>
   );
 };
 const styles = StyleSheet.create({
