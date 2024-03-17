@@ -6,6 +6,8 @@ import { auth} from '../Firebase/firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery, gql } from '@apollo/client';
 import { FlatList } from 'react-native-gesture-handler';
+
+//graphql part 1
 const COUNTRY_QUERY = gql `
 query CountryQuery{
   countries{
@@ -70,11 +72,15 @@ const handleViewPosts = () =>{
       };
       checkLoggedIn()
 }, [])
+
+//graphql part 2
 const{data, loading} = useQuery(COUNTRY_QUERY)
 
 // useEffect(()=>{
 //   console.log('GraphQl===', data)
 // })
+
+
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Brand Logo Detection</Text>
@@ -112,6 +118,8 @@ const{data, loading} = useQuery(COUNTRY_QUERY)
           <TouchableOpacity onPress={() => navigation.navigate('DropdownComponent')}>
             <FontAwesome name="info" size={24} color="black" />
           </TouchableOpacity>
+
+   {/* graphql part3*/} 
           <FlatList
         data={data?.countries}
         renderItem={ ({item}) =>

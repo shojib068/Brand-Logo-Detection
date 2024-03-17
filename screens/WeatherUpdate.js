@@ -12,7 +12,7 @@ const WeatherUpdate = ({ navigation }) => {
 
     async function fetchWeatherData(cityName) {
         setLoaded(false);
-      //  const API = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`
+       const API = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`
         try {
             const response = await fetch(API);
             if (response.status == 200) {
