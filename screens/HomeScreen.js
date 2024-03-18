@@ -104,7 +104,7 @@ const{data, loading} = useQuery(COUNTRY_QUERY)
         >
 
           <Text style={styles.buttonText}>Detect Logo</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> 
         <TouchableOpacity
         style={styles.viewPostsButton}
         onPress={handleViewPosts}

@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, Button } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Button, TouchableOpacity } from 'react-native';
 import Weather from '../component/Weather';
 import SearchBar from '../component/SearchBar';
-
+import { Ionicons } from '@expo/vector-icons';
 const API_KEY = "a8e5ff2d1e5ba7337eaf1bb8a0e3e035";
 
 const WeatherUpdate = ({ navigation }) => {
@@ -49,7 +49,10 @@ const WeatherUpdate = ({ navigation }) => {
             <View style={styles.container}>
                 <SearchBar fetchWeatherData={fetchWeatherData} />
                 <Text style={styles.primaryText}>City Not Found! Try Different City</Text>
-                <Button title="<<" onPress={handleBackWeather} />
+                <TouchableOpacity style={styles.backButton} onPress={handleBackWeather }>
+                <Ionicons name="arrow-back" size={24} color="black" />
+                <Text style={styles.backButtonText}>Back</Text>
+              </TouchableOpacity>
             </View>
         );
     }
@@ -57,7 +60,10 @@ const WeatherUpdate = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Weather weatherData={weatherData} fetchWeatherData={fetchWeatherData} />
-            <Button title="<<" onPress={handleBackProfile} />
+            <TouchableOpacity style={styles.backButton} onPress={handleBackProfile }>
+                <Ionicons name="arrow-back" size={24} color="black" />
+                <Text style={styles.backButtonText}>Back</Text>
+              </TouchableOpacity>
         </View>
     );
 };

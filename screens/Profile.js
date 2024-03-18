@@ -151,6 +151,10 @@ const UserProfile = ({navigation}) => {
  const weatherCondition = async ()=>{
   navigation.replace('WeatherUpdate');
  } 
+
+ const exploreML = async ()=>{
+  navigation.replace('ExploreML');
+ } 
   useEffect(() => {
     const getUser = async () => {
       const userData = await AsyncStorage.getItem('userData');
@@ -208,6 +212,9 @@ const UserProfile = ({navigation}) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={weatherCondition}>
         <Text style={styles.buttonText}>Weather</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={exploreML}>
+        <Text style={styles.buttonText}>Explore ML</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleLogout}>

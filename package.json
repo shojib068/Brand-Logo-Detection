@@ -21,6 +21,8 @@
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/native-stack": "^6.9.18",
     "@react-navigation/stack": "^6.3.20",
+    "@tensorflow/tfjs": "^4.17.0",
+    "@tensorflow/tfjs-react-native": "^1.0.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "domelementtype": "^2.3.0",

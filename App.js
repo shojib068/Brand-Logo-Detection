@@ -21,6 +21,7 @@ import BlogListItem from './component/BlogsListItem';
 import BlogUI from './screens/ABlog';
 import WeatherUpdate from './screens/WeatherUpdate';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import ExploreML from './screens/ExploreML';
 const Stack = createStackNavigator();
 // Initialize Apollo Client
 const client = new ApolloClient({
@@ -50,20 +51,21 @@ const App = () => {
             ),
           }}
         />
-        <Stack.Screen name="LogIn" component={LoginScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="WriteBlog" component={WriteBlogScreen} options={{headerShown:false}}/>
-        <Stack.Screen name="AppNav" component={AppNavigator} options={{headerShown:false}}/>
-        <Stack.Screen name="SignUp" component={SignupScreen} options={{headerShown:false}}/>
+        <Stack.Screen name="LogIn" component={LoginScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="WriteBlog" component={WriteBlogScreen} />
+        <Stack.Screen name="AppNav" component={AppNavigator} />
+        <Stack.Screen name="SignUp" component={SignupScreen} />
         <Stack.Screen name="Logos" component={LogosScreen} />
         <Stack.Screen name="ImageDetail" component={ImageDetailScreen} />
-        <Stack.Screen name="UserProfile"component={UserProfile} options={{headerShown:false}}/>
-        <Stack.Screen name="AboutUs" component={AboutUs} options={{headerShown:false}}/>
-        <Stack.Screen name="Table" component={Table} options={{headerShown:false}}/>
-        <Stack.Screen name="BlogList" component={BlogList} options={{headerShown:false}}/>
-        <Stack.Screen name="BlogListItem" component={BlogListItem} options={{headerShown:false}}/>
-        <Stack.Screen name="ABlog" component={BlogUI} options={{headerShown:false}}/>
-        <Stack.Screen name="WeatherUpdate" component={WeatherUpdate} options={{headerShown:false}}/>
+        <Stack.Screen name="UserProfile"component={UserProfile} />
+        <Stack.Screen name="AboutUs" component={AboutUs} />
+        <Stack.Screen name="Table" component={Table} />
+        <Stack.Screen name="BlogList" component={BlogList} />
+        <Stack.Screen name="BlogListItem" component={BlogListItem} />
+        <Stack.Screen name="ABlog" component={BlogUI} />
+        <Stack.Screen name="WeatherUpdate" component={WeatherUpdate} />
+        <Stack.Screen name="ExploreML" component={ExploreML} />
        
     
                
