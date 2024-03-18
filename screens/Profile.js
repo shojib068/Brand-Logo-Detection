@@ -155,6 +155,9 @@ const UserProfile = ({navigation}) => {
  const exploreML = async ()=>{
   navigation.replace('ExploreML');
  } 
+ const HomeScreen = async ()=>{
+  navigation.replace('HomeScreen');
+ } 
   useEffect(() => {
     const getUser = async () => {
       const userData = await AsyncStorage.getItem('userData');
@@ -220,6 +223,9 @@ const UserProfile = ({navigation}) => {
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={HomeScreen}>
+        <Text style={styles.buttonText}>Home Screen</Text>
+      </TouchableOpacity>
 
       <View style={styles.ratingContainer}>
         <Text style={styles.subHeading}>Rate Our App</Text>
@@ -249,38 +255,25 @@ const UserProfile = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
+    flexGrow: 1,
+    backgroundColor: '#FFF',
+    paddingHorizontal: 20,
+    paddingVertical: 40,
   },
-  imageUploadButtonContainer:{
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center',
-    height:'auto',
-    padding:10,
-    margin:5
+  profileContainer: {
+    backgroundColor: '#F0F0F0',
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  imageUploadButtonContainer: {
+    marginBottom: 20,
   },
   image: {
     width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  profileContainer: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
-    marginBottom: 20,
   },
   label: {
     fontSize: 18,
@@ -292,41 +285,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    width: '100%',
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    borderRadius: 10,
     alignItems: 'center',
     marginBottom: 10,
   },
   buttonText: {
     fontSize: 18,
-    color: '#fff',
+    color: '#FFF',
     fontWeight: 'bold',
-  },
-  ratingContainer: {
-    marginTop: 20,
-  },
-  subHeading: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
   },
   starsContainer: {
     flexDirection: 'row',
+    marginBottom: 10,
   },
   starIcon: {
     marginRight: 5,
-  },
-  submitButton: {
-    backgroundColor: '#007bff',
-    color: '#fff',
-    padding: 10,
-    borderRadius: 5,
-    width: 150,
-    textAlign: 'center',
-    marginTop: 10,
-  },
+  }
 });
-
 export default UserProfile;

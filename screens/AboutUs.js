@@ -169,6 +169,20 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
+  cardContainer: {
+    marginBottom: 20,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',

@@ -129,33 +129,41 @@ const Writeblog = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 8,
-    paddingBottom:50,
-    backgroundColor:'#fff'
+    padding: 20,
+    backgroundColor: '#ffffff',
   },
   title: {
-    color:'#e80505',
-    fontSize:30,
-    fontWeight:'bold',
-    marginBottom:15
+    color: '#333333',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 15,
   },
   input: {
     height: 40,
     marginBottom: 16,
     paddingHorizontal: 8,
-    backgroundColor:'white',
-    borderRadius:8,
-    borderWidth:1,
-    borderColor:'#e80505'
+    backgroundColor: '#ffffff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#cccccc',
   },
-  editorContainer:{
-    borderRadius:10,
-    overflow:'hidden',
-    borderWidth:1,
-    borderColor:'#e80505'
+  editorContainer: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginBottom: 16,
   },
   editor: {
-    minHeight:350,
+    minHeight: 350,
   },
   postButton: {
     backgroundColor: '#e80505',
@@ -163,10 +171,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     alignItems: 'center',
-    marginVertical:30,
   },
   postButtonText: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
   },

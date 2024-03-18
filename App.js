@@ -22,6 +22,7 @@ import BlogUI from './screens/ABlog';
 import WeatherUpdate from './screens/WeatherUpdate';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import ExploreML from './screens/ExploreML';
+// import GraphQL from './screens/GraphQL';
 const Stack = createStackNavigator();
 // Initialize Apollo Client
 const client = new ApolloClient({
@@ -61,11 +62,12 @@ const App = () => {
         <Stack.Screen name="UserProfile"component={UserProfile} />
         <Stack.Screen name="AboutUs" component={AboutUs} />
         <Stack.Screen name="Table" component={Table} />
-        <Stack.Screen name="BlogList" component={BlogList} />
+        <Stack.Screen name="BlogList" component={BlogList}options={{ headerShown: false }} />
         <Stack.Screen name="BlogListItem" component={BlogListItem} />
         <Stack.Screen name="ABlog" component={BlogUI} />
         <Stack.Screen name="WeatherUpdate" component={WeatherUpdate} />
         <Stack.Screen name="ExploreML" component={ExploreML} />
+        {/*<Stack.Screen name="GraphQL" component={GraphQL} /> */} 
        
     
                
